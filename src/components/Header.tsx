@@ -11,7 +11,7 @@ const Header = () => {
         </div>
         
         <nav className="hidden md:flex items-center space-x-6">
-          <a href="#" className="text-foreground hover:text-primary transition-colors">
+          <a href="/browse" className="text-foreground hover:text-primary transition-colors">
             Browse Pets
           </a>
           <a href="#" className="text-foreground hover:text-primary transition-colors">
@@ -26,13 +26,17 @@ const Header = () => {
           <Button variant="ghost" size="sm">
             <Search className="h-4 w-4" />
           </Button>
-          <Button variant="secondary" size="sm">
-            <PlusCircle className="h-4 w-4 mr-2" />
-            List Pet
+          <Button variant="secondary" size="sm" asChild>
+            <a href="/list">
+              <PlusCircle className="h-4 w-4 mr-2" />
+              List Pet
+            </a>
           </Button>
-          <Button variant="outline" size="sm">
-            <User className="h-4 w-4 mr-2" />
-            Sign In
+          <Button variant="outline" size="sm" asChild>
+            <a href="/auth">
+              <User className="h-4 w-4 mr-2" />
+              Sign In
+            </a>
           </Button>
         </div>
       </div>
