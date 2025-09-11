@@ -17,7 +17,7 @@ const Header = () => {
           <a href="#" className="text-foreground hover:text-primary transition-colors">
             Success Stories
           </a>
-          <a href="#" className="text-foreground hover:text-primary transition-colors">
+          <a href="/about" className="text-foreground hover:text-primary transition-colors">
             About
           </a>
         </nav>

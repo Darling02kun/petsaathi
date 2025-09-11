@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import BrowsePets from "./pages/BrowsePets";
 import ListPet from "./pages/ListPet";
 import Auth from "./pages/Auth";
+import About from "./pages/About";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -22,6 +23,7 @@ const App = () => (
           <Route path="/browse" element={<BrowsePets />} />
           <Route path="/list" element={<ListPet />} />
           <Route path="/auth" element={<Auth />} />
+          <Route path="/about" element={<About />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
