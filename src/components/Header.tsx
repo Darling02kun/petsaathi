@@ -1,14 +1,14 @@
-import { Heart, PlusCircle, Search, User } from "lucide-react";
+import { Heart, PawPrintIcon, PlusCircle, Search, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Header = () => {
   return (
     <header className="bg-background/95 backdrop-blur-sm border-b border-border sticky top-0 z-50">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-        <div className="flex items-center space-x-2">
-          <Heart className="h-8 w-8 text-primary" />
-          <span className="text-2xl font-bold text-foreground">PawMatch</span>
-        </div>
+        <a href="/" className="flex items-center space-x-2">
+          <PawPrintIcon className="h-8 w-8 text-primary" />
+          <span className="text-2xl font-bold text-foreground">PetSaathi</span>
+        </a>
         
         <nav className="hidden md:flex items-center space-x-6">
           <a href="/browse" className="text-foreground hover:text-primary transition-colors">

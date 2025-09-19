@@ -1,58 +1,60 @@
 import { useState } from "react";
-import { Search, Filter, MapPin } from "lucide-react";
+import { Search, Filter, MapPin, Sparkles } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
+import { Textarea } from "@/components/ui/textarea";
 import PetCard from "@/components/PetCard";
 import Header from "@/components/Header";
+import { getPetRecommendations } from "@/services/recommend.service";
 
 // Extended mock data for browsing
 const allPets = [
   {
     id: "1",
-    name: "Bella",
+    name: "Daisy",
     type: "Dog",
     breed: "Golden Retriever",
     age: "3 years",
     gender: "Female",
-    location: "San Francisco, CA",
+    location: "Raj Nagar, Ghaziabad",
     image: "https://images.unsplash.com/photo-1552053831-71594a27632d?w=400&h=300&fit=crop",
     description: "Bella is a gentle and loving Golden Retriever who adores children and other pets. She's house-trained and knows basic commands.",
     isUrgent: false
   },
   {
     id: "2", 
-    name: "Whiskers",
+    name: "Sweety",
     type: "Cat",
     breed: "Maine Coon",
     age: "2 years",
     gender: "Male",
-    location: "Portland, OR",
+    location: "Saket, Delhi",
     image: "https://images.unsplash.com/photo-1574158622682-e40e69881006?w=400&h=300&fit=crop",
     description: "Whiskers is a majestic Maine Coon with a playful personality. He loves to chase toys and curl up for cuddles.",
     isUrgent: true
   },
   {
     id: "3",
-    name: "Charlie",
+    name: "Tommy",
     type: "Dog", 
     breed: "Labrador Mix",
     age: "5 years",
     gender: "Male",
-    location: "Seattle, WA",
+    location: "Punjabi Bagh, Delhi",
     image: "https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400&h=300&fit=crop",
     description: "Charlie is an energetic Lab mix who loves outdoor adventures. He's great with kids and would make an excellent hiking companion.",
     isUrgent: false
   },
   {
     id: "4",
-    name: "Luna",
+    name: "Lisa",
     type: "Cat",
     breed: "Siamese",
     age: "1 year",
     gender: "Female",
-    location: "San Francisco, CA",
+    location: "Shahdhra, Delhi",
     image: "https://images.unsplash.com/photo-1596854407944-bf87f6fdd49e?w=400&h=300&fit=crop",
     description: "Luna is a playful Siamese kitten with striking blue eyes. She's very social and loves attention.",
     isUrgent: false
@@ -64,7 +66,7 @@ const allPets = [
     breed: "German Shepherd",
     age: "4 years",
     gender: "Male",
-    location: "Los Angeles, CA",
+    location: "Saket, Delhi",
     image: "https://images.unsplash.com/photo-1551717743-49959800b1f6?w=400&h=300&fit=crop",
     description: "Max is a loyal German Shepherd who needs an experienced owner. He's protective and intelligent.",
     isUrgent: true
@@ -88,6 +90,10 @@ const BrowsePets = () => {
   const [selectedType, setSelectedType] = useState("all");
   const [selectedLocation, setSelectedLocation] = useState("all");
   const [filteredPets, setFilteredPets] = useState(allPets);
+  // AI recommendation states
+  const [aiPrompt, setAiPrompt] = useState("");
+  const [aiLoading, setAiLoading] = useState(false);
+  const [recommendedPets, setRecommendedPets] = useState<typeof allPets>([]);
 
   const handleFilter = () => {
     let filtered = allPets.filter(pet => {
@@ -107,12 +113,62 @@ const BrowsePets = () => {
       
       <main className="pt-8">
         <div className="container mx-auto px-4">
+
           {/* Header Section */}
           <div className="text-center mb-8">
             <h1 className="text-4xl font-bold text-foreground mb-4">Find Your Perfect Companion</h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Browse through our loving pets waiting for their forever homes. Use the filters below to find your ideal match.
             </p>
+          </div>
+
+          {/* AI reccomendatko */}
+          <div className="bg-card rounded-lg p-6 mb-8 shadow-sm border">
+            <h2 className="text-xl font-semibold text-foreground mb-4">AI Recommendations</h2>
+            <div className="flex items-start gap-4 flex-col md:flex-row">
+              <div className="flex-1 w-full">
+                <label className="block text-sm font-medium text-foreground mb-2">Describe your ideal pet</label>
+                <Textarea
+                  placeholder="e.g., A gentle dog good with kids and apartment living, preferably short-haired."
+                  value={aiPrompt}
+                  onChange={(e) => setAiPrompt(e.target.value)}
+                  rows={3}
+                />
+              </div>
+              <div className="flex md:flex-col gap-2 w-full md:w-auto">
+                <Button
+                  onClick={async () => {
+                    setAiLoading(true);
+                    try {
+                      const recs = await getPetRecommendations(aiPrompt, allPets);
+                      setRecommendedPets(recs);
+                    } finally {
+                      setAiLoading(false);
+                    }
+                  }}
+                  disabled={aiLoading}
+                >
+                  <Sparkles className="h-4 w-4 mr-2" />
+                  {aiLoading ? "Finding matches..." : "Get AI Recommendations"}
+                </Button>
+                {recommendedPets.length > 0 && (
+                  <Button variant="outline" onClick={() => setRecommendedPets([])}>Clear</Button>
+                )}
+              </div>
+            </div>
+            {recommendedPets.length > 0 && (
+              <div className="mt-6">
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-2xl font-semibold text-foreground">Recommended for You</h2>
+                  <span className="text-sm text-muted-foreground">Based on your description</span>
+                </div>
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {recommendedPets.map((pet) => (
+                    <PetCard key={`rec-${pet.id}`} {...pet} />
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Filter Section */}
@@ -163,6 +219,7 @@ const BrowsePets = () => {
               <span>Showing {filteredPets.length} pets in your search area</span>
             </div>
           </div>
+
 
           {/* Results Section */}
           <div className="mb-6">

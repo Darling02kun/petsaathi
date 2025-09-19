@@ -11,21 +11,25 @@ const HeroSection = () => {
           <div className="text-center lg:text-left">
             <h1 className="text-5xl lg:text-6xl font-bold text-primary-foreground mb-6 leading-tight">
               Find Your Perfect
-              <span className="block text-primary-glow">Furry Friend</span>
+              <span className="block text-primary-glow">Pet Saathi</span>
             </h1>
             <p className="text-xl text-primary-foreground/90 mb-8 leading-relaxed">
               Connect with loving pets in your area who need forever homes. 
               Every adoption creates space for another rescue.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+              <a href="/browse">
               <Button size="lg" variant="secondary" className="text-lg px-8 py-6">
                 <Search className="h-5 w-5 mr-2" />
                 Browse Pets
               </Button>
+              </a>
+              <a href="/list">
               <Button size="lg" variant="outline" className="text-lg px-8 py-6 bg-white/10 border-white/30 text-white hover:bg-white/20">
                 <Heart className="h-5 w-5 mr-2" />
                 List a Pet
               </Button>
+              </a>
             </div>
             <div className="flex items-center justify-center lg:justify-start space-x-8 mt-12 text-primary-foreground/80">
               <div className="text-center">
@@ -58,7 +62,7 @@ const HeroSection = () => {
                   <Heart className="h-6 w-6 text-success-foreground" />
                 </div>
                 <div>
-                  <div className="font-semibold text-foreground">Luna adopted!</div>
+                  <div className="font-semibold text-foreground">Daisy adopted!</div>
                   <div className="text-sm text-muted-foreground">Just found her forever home</div>
                 </div>
               </div>
